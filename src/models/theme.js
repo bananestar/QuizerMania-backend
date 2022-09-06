@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 //! Models Theme
 //todo: themeID --> UUID
-//todo: name   --> string
+//todo: name    --> string
 
 /**
  *
