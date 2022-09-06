@@ -10,9 +10,9 @@ const { Sequelize, DataTypes } = require('sequelize');
  */
 module.exports = (sequelize) => {
     const Question = sequelize.define('question', {
-        themeID: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+        questionID: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
         },
         libelle: {
