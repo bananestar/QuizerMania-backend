@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 //! Models QuizQuestions
 //todo: quizQuestionID  --> UUID
