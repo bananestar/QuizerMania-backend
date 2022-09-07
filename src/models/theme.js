@@ -9,16 +9,23 @@ const { Sequelize, DataTypes } = require('sequelize');
  * @param {Sequelize} sequelize
  */
 module.exports = (sequelize) => {
-    const Theme = sequelize.define('theme', {
-        themeID: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        name: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-        },
-    });
-    return Theme;
+	const Theme = sequelize.define(
+		'theme',
+		{
+			themeID: {
+				type: DataTypes.INTEGER,
+				autoIncrement: true,
+				primaryKey: true,
+			},
+			name: {
+				type: DataTypes.STRING(50),
+				allowNull: false,
+			},
+		},
+		{
+			tableName: 'theme',
+			timestamps: false,
+		}
+	);
+	return Theme;
 };

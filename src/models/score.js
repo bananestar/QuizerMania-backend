@@ -9,16 +9,22 @@ const { Sequelize, DataTypes } = require('sequelize');
  * @param {Sequelize} sequelize
  */
 module.exports = (sequelize) => {
-    const Score = sequelize.define('score', {
-        scoreID: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
-            primaryKey: true,
-        },
-        score: {
-            type: DataTypes.FLOAT,
-            allowNull: false,
-        },
-    });
-    return Score;
+	const Score = sequelize.define(
+		'score',
+		{
+			scoreID: {
+				type: DataTypes.UUID,
+				defaultValue: DataTypes.UUIDV4,
+				primaryKey: true,
+			},
+			score: {
+				type: DataTypes.FLOAT,
+				allowNull: false,
+			},
+		},
+		{
+			tableName: 'score',
+		}
+	);
+	return Score;
 };

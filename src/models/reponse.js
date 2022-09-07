@@ -9,16 +9,23 @@ const { Sequelize, DataTypes } = require('sequelize');
  * @param {Sequelize} sequelize
  */
 module.exports = (sequelize) => {
-    const Reponse = sequelize.define('reponse', {
-        reponseID: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        libelle: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
-    });
-    return Reponse;
+	const Reponse = sequelize.define(
+		'reponse',
+		{
+			reponseID: {
+				type: DataTypes.INTEGER,
+				autoIncrement: true,
+				primaryKey: true,
+			},
+			libelle: {
+				type: DataTypes.TEXT,
+				allowNull: false,
+			},
+		},
+		{
+			tableName: 'reponse',
+			timestamps: false,
+		}
+	);
+	return Reponse;
 };

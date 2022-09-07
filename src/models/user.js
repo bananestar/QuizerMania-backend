@@ -37,6 +37,13 @@ module.exports = (sequelize) => {
             defaultValue:
                 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/default.png?alt=media&token=f8b1b4b8-121d-4ffa-9e9c-bfbbf190f163',
         },
+        isAdmin: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        },
+    }, {
+        tableName: 'User'
     });
     return User;
 };
