@@ -31,6 +31,10 @@ module.exports = (sequelize) => {
                 name: 'UK_User_Email',
             },
         },
+        password: {
+            type: DataTypes.CHAR(60),
+            allowNull: false,
+        },
         img: {
             type: DataTypes.STRING(2000),
             allowNull: false,
