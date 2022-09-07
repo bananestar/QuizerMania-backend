@@ -62,7 +62,7 @@ const userController = {
 			updatedAt: new Date(),
 		};
 
-		//? request de mise à jour
+		//Todo: request de mise à jour
 		const updatedUser = await db.User.update(data, {
 			where: { userID },
 			returning: true,
@@ -84,6 +84,27 @@ const userController = {
 
         return res.status(200).json(new SuccessObjectResponse(token));
 	},
+
+    //! suppression d'un utilisateur
+    /**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+    delete: async (req,res)=>{
+        const id = parseInt(req.params.id);
+        //Todo: request de suppression
+		const nbRow = await db.User.destroy({
+			where: { id },
+		});
+
+        //? cas Erreur: utilisateur introuvable
+		if (nbRow !== 1) {
+			return res.status(404).json(new NotFoundErrorResponse('User not found'));
+		}
+        
+		return res.sendStatus(204);
+    }
 };
 
 module.exports = userController;
