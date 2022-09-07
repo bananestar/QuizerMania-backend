@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+//! Génère un token
 const generateJWT = ({ id, pseudo, isAdmin }) => {
 	return new Promise((resolve, reject) => {
 		const data = { id, pseudo, isAdmin };
@@ -18,6 +19,7 @@ const generateJWT = ({ id, pseudo, isAdmin }) => {
 	});
 };
 
+//! decode un token
 const decodeJWT = (token) => {
 	if (!token) {
 		return Promise.reject(new Error('Invalid JWT'));
