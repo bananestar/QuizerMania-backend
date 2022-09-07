@@ -4,8 +4,9 @@ const bcrypt = require('bcrypt');
 const { SuccessObjectResponse } = require('../response-schemas/success-schema');
 const { Op } = require('sequelize');
 const { ErrorResponse } = require('../response-schemas/error-schema');
-const { generateJWT, decodeJWT } = require('../utils/jwt-utils');
+const { generateJWT } = require('../utils/jwt-utils');
 
+//Todo: register, login
 const authController = {
 	//! Inscription User
 	/**

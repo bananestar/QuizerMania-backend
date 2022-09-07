@@ -8,6 +8,8 @@ const {
 	SuccessArrayResponse,
 } = require('../response-schemas/success-schema');
 
+
+//Todo: getAll, get, update, delete 
 const userController = {
 	//! recuperation de tout les utilisateurs
 	/**
@@ -102,7 +104,7 @@ const userController = {
 		if (nbRow !== 1) {
 			return res.status(404).json(new NotFoundErrorResponse('User not found'));
 		}
-        
+
 		return res.sendStatus(204);
     }
 };
