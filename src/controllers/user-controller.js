@@ -61,7 +61,6 @@ const userController = {
 			email: dataTemp.email,
 			password: hashedPassword,
 			img: dataTemp.img,
-			updatedAt: new Date(),
 		};
 
 		//Todo: request de mise à jour
@@ -80,8 +79,6 @@ const userController = {
 			userID: data.userID,
 			pseudo: data.pseudo,
 			isAdmin: data.isAdmin,
-			img: data.img,
-			updatedAt: data.updatedAt,
 		});
 
         return res.status(200).json(new SuccessObjectResponse(token));
