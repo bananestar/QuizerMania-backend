@@ -33,7 +33,7 @@ const questionController = {
 			where: { questionID },
 		});
 
-		//? cas si le QuizQuestions est introuvable ou n'existe pas
+		//? cas si le question est introuvable ou n'existe pas
 		if (!question) {
 			return res.status(404).json(new NotFoundErrorResponse('Question not found'));
 		}
