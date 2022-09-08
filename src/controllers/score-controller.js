@@ -29,7 +29,7 @@ const scoreController = {
 		const scoreID = parseInt(req.params.id);
 		//Todo: recherche du score dans la db
 		const score = await db.Score.findOne({
-			where: { userID: scoreID },
+			where: { scoreID },
 		});
 
 		//? cas si le score est introuvable ou n'existe pas

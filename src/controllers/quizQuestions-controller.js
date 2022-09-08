@@ -30,7 +30,7 @@ const quizQuestionsController = {
         const quizQuestionID = parseInt(req.params.id);
 		//Todo: recherche du quizQuestion dans la db
 		const quizQuestion = await db.QuizQuestions.findOne({
-			where: { userID: quizQuestionID },
+			where: { quizQuestionID },
 		});
 
 		//? cas si le QuizQuestions est introuvable ou n'existe pas
