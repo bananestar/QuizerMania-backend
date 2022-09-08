@@ -51,10 +51,9 @@ const userController = {
 	 * @param {Response} res
 	 */
 	update: async (req, res) => {
-		const userID = parseInt(req.params.id);
+		const userID = req.params.id;
 		const dataTemp = req.validatedData;
 		const hashedPassword = await bcrypt.hash(dataTemp.password, 10);
-
 		//? Preparation des donnée
 		const data = {
 			pseudo: dataTemp.pseudo,

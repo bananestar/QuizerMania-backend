@@ -25,6 +25,9 @@ db.sequelize
 //! Forcing sync + alter ‼‼ Suppression donnée ‼‼
 // db.sequelize.sync({ alter: true, force: true });
 
+const router = require('./routes');
+
+app.use('/api', router);
 
 //! Listen 
 app.listen(PORT, () => {

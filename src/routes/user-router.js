@@ -9,7 +9,7 @@ userRouter.route('/').get(userController.getAll);
 userRouter
 	.route('/:id')
 	.get(userController.get)
-	.put(authJWT(), bodyValidation(userUpdatedValidator), userController.update)
+	.put(bodyValidation(userUpdatedValidator), userController.update)
 	.delete(authJWT(), userController.delete);
 
 module.exports = userRouter;

@@ -28,7 +28,7 @@ const authController = {
 
 		//? génère token
 		const token = await generateJWT({
-			userID: user.userID,
+			id: user.userID,
 			pseudo: user.pseudo,
 			isAdmin: user.isAdmin,
 		});
