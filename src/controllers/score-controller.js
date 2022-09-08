@@ -32,7 +32,7 @@ const scoreController = {
 			where: { userID: scoreID },
 		});
 
-		//? cas si le quiz est introuvable ou n'existe pas
+		//? cas si le score est introuvable ou n'existe pas
 		if (!score) {
 			return res.status(404).json(new NotFoundErrorResponse('Score not found'));
 		}
@@ -88,7 +88,7 @@ const scoreController = {
 			where: { scoreID },
 		});
 
-		//? cas Erreur: Quiz introuvable
+		//? cas Erreur: score introuvable
 		if (nbRow !== 1) {
 			return res.status(404).json(new NotFoundErrorResponse('Score not found'));
 		}
