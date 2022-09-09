@@ -7,6 +7,7 @@ const Multer = require('multer');
 const FirebaseStorage = require('multer-firebase-storage');
 const userRouter = require('express').Router();
 
+//todo: params firebase
 const multer = Multer({
 	storage: FirebaseStorage({
 		bucketName: FB_BUCKET,
@@ -20,13 +21,13 @@ const multer = Multer({
 		public: true,
 	}),
 });
-
+//! route getAll
 userRouter.route('/').get(userController.getAll);
 
 userRouter
-	.route('/:id')
-	.get(userController.get)
-	.put(multer.single('img'),bodyValidation(userUpdatedValidator), userController.update)
-	.delete(authJWT(), userController.delete);
+	.route('/:id') //! url (../users/example.uuid)
+	.get(userController.get) //! route get
+	.put(multer.single('img'),bodyValidation(userUpdatedValidator), userController.update) //! route update
+	.delete(authJWT(), userController.delete); //! route delete
 
 module.exports = userRouter;
