@@ -114,10 +114,10 @@ const quizController = {
 		//Todo: recherche du quiz dans la db avec les questions/réponses
 		const questionsAllByQuizz = await db.Quiz.findByPk(quizID,{
 			include: [{
-				models: question,
+				model: question,
 				through: [],
 				include:[{
-					models: reponse
+					model: reponse
 				}]
 			}]
 		})
