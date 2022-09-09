@@ -67,6 +67,13 @@ const scoreController = {
 				{ model: quiz, through: ['name'] },
 			],
 		});
+		
+		//? cas si le score est introuvable ou n'existe pas
+		if (!score) {
+			return res.status(404).json(new NotFoundErrorResponse('Score not found'));
+		}
+
+		return res.status(200).json(new SuccessObjectResponse(score));
 	},
 	//! ajout d'un score
 	/**
