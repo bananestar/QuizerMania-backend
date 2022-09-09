@@ -53,13 +53,15 @@ const userController = {
 	update: async (req, res) => {
 		const userID = req.params.id;
 		const dataTemp = req.validatedData;
+		const imgURL = req.file.publicUrl;
+
 		const hashedPassword = await bcrypt.hash(dataTemp.password, 10);
 		//? Preparation des donnée
 		const data = {
 			pseudo: dataTemp.pseudo,
 			email: dataTemp.email,
 			password: hashedPassword,
-			img: dataTemp.img,
+			img: imgURL,
 		};
 
 		//Todo: request de mise à jour
