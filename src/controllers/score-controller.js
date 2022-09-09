@@ -58,7 +58,7 @@ const scoreController = {
 	 * @param {Response} res
 	 */
 	update: async (req, res) => {
-		const scoreID = parseInt(req.params.id);
+		const scoreID = req.params.id;
 		const data = req.validatedData;
 
 		//Todo: request de mise à jour
@@ -82,7 +82,7 @@ const scoreController = {
 	 * @param {Response} res
 	 */
 	delete: async (req, res) => {
-		const scoreID = parseInt(req.params.id);
+		const scoreID = req.params.id;
 		//Todo: request de suppression
 		const nbRow = await db.Score.destroy({
 			where: { scoreID },

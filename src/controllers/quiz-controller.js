@@ -1,5 +1,7 @@
 const { Request, Response } = require('express');
 const db = require('../models');
+const question = require('../models/question');
+const reponse = require('../models/reponse');
 const { ErrorResponse, NotFoundErrorResponse } = require('../response-schemas/error-schema');
 const {
 	SuccessObjectResponse,
@@ -61,7 +63,7 @@ const quizController = {
 	 * @param {Response} res
 	 */
 	update: async (req, res) => {
-		const quizID = parseInt(req.params.id);
+		const quizID = req.params.id;
 		const data = req.validatedData;
 
 		//Todo: request de mise à jour
@@ -78,7 +80,7 @@ const quizController = {
 		const updateValue = await db.Quiz.findOne({ where: { quizID } });
 		return res.status(200).json(new SuccessObjectResponse(updateValue));
 	},
-	
+
 	//! suppression d'un quiz
 	/**
 	 *
@@ -86,7 +88,7 @@ const quizController = {
 	 * @param {Response} res
 	 */
 	delete: async (req, res) => {
-		const quizID = parseInt(req.params.id);
+		const quizID = req.params.id;
 		//Todo: request de suppression
 		const nbRow = await db.Quiz.destroy({
 			where: { quizID },
@@ -96,8 +98,36 @@ const quizController = {
 		if (nbRow !== 1) {
 			return res.status(404).json(new NotFoundErrorResponse('Quiz not found'));
 		}
-        
+
 		return res.sendStatus(204);
+	},
+
+	//! getAllQuestion by quiz
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	getAllQuestionQuiz: async (req, res) => {
+		const quizID = req.params.id;
+
+		//Todo: recherche du quiz dans la db avec les questions/réponses
+		const questionsAllByQuizz = await db.Quiz.findByPk(quizID,{
+			include: [{
+				models: question,
+				through: [],
+				include:[{
+					models: reponse
+				}]
+			}]
+		})
+
+		//? cas si le quiz est introuvable ou n'existe pas
+		if (!questionsAllByQuizz) {
+			return res.status(404).json(new NotFoundErrorResponse('Quiz not found'));
+		}
+
+		return res.status(200).json(new SuccessObjectResponse(questionsAllByQuizz));
 	},
 };
 

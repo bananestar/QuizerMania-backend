@@ -4,6 +4,7 @@ const yup = require('yup');
 const reponseValidator = yup.object().shape({
 	reponseID: yup.string().trim().required().uuid(),
 	questionID: yup.string().trim().required().uuid(),
+	isValid: yup.boolean().required(),
 	libelle: yup.string().required(),
 });
 
@@ -12,6 +13,7 @@ const reponseValidator = yup.object().shape({
 const reponseUpdatedValidator = yup.object().shape({
 	reponseID: yup.string().trim().required().uuid(),
 	questionID: yup.string().trim().required().uuid(),
+	isValid: yup.boolean(),
 	libelle: yup.string(),
 });
 

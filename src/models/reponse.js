@@ -2,6 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 //! Models Reponse
 //todo: reponseID  --> UUID
+//todo: isValid	   --> boolean
 //todo: libelle    --> text
 
 /**
@@ -16,6 +17,10 @@ module.exports = (sequelize) => {
 				type: DataTypes.INTEGER,
 				autoIncrement: true,
 				primaryKey: true,
+			},
+			isValid:{
+				type: DataTypes.BOOLEAN,
+				allowNull: false,
 			},
 			libelle: {
 				type: DataTypes.TEXT,
