@@ -112,15 +112,20 @@ const quizController = {
 		const quizID = req.params.id;
 
 		//Todo: recherche du quiz dans la db avec les questions/réponses
-		const questionsAllByQuizz = await db.Quiz.findByPk(quizID,{
-			include: [{
-				model: question,
-				through: [],
-				include:[{
-					model: reponse
-				}]
-			}]
-		})
+		const questionsAllByQuizz = await db.Quiz.findOne({
+			where: { quizID },
+			include: [
+				{
+					model: question,
+					through: [],
+					include: [
+						{
+							model: reponse,
+						},
+					],
+				},
+			],
+		});
 
 		//? cas si le quiz est introuvable ou n'existe pas
 		if (!questionsAllByQuizz) {
