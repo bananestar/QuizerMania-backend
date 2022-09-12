@@ -30,7 +30,7 @@ const userController = {
 	 * @param {Response} res
 	 */
 	get: async (req, res) => {
-		const userID = parseInt(req.params.id);
+		const userID = req.params.id;
 		//Todo: recherche l'utilisateur dans la db
 		const user = await db.User.findOne({
 			where: { userID },

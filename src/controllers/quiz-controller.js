@@ -1,4 +1,5 @@
 const { Request, Response } = require('express');
+const { Question, Reponse, Theme } = require('../models');
 const db = require('../models');
 const question = require('../models/question');
 const reponse = require('../models/reponse');
@@ -29,7 +30,7 @@ const quizController = {
 	 * @param {Response} res
 	 */
 	get: async (req, res) => {
-		const quizID = parseInt(req.params.id);
+		const quizID = req.params.id;
 		//Todo: recherche du quiz dans la db
 		const quiz = await db.Quiz.findOne({
 			where: { quizID },
@@ -53,6 +54,21 @@ const quizController = {
 		const data = req.validatedData;
 		//Todo: Ajout du quiz à la db
 		const newQuiz = await db.Quiz.create(data);
+		return res.status(201).json(new SuccessObjectResponse(newQuiz, 201));
+	},
+
+	//! ajout d'un quiz avec question/reponse
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	addQuiz: async (req, res) => {
+		const data = req.body;
+		//Todo: Ajout du quiz à la db
+		const newQuiz = await db.Quiz.create(data, {
+			include: [{ association: Question, include: [{ Reponse }, { Theme }] }],
+		});
 		return res.status(201).json(new SuccessObjectResponse(newQuiz, 201));
 	},
 
