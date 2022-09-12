@@ -27,7 +27,7 @@ userRouter.route('/').get(userController.getAll);
 userRouter
 	.route('/:id') //! url (../users/example.uuid)
 	.get(userController.get) //! route get
-	.put(multer.single('img'),bodyValidation(userUpdatedValidator), userController.update) //! route update
+	.put(authJWT(),multer.single('img'),bodyValidation(userUpdatedValidator), userController.update) //! route update
 	.delete(authJWT(), userController.delete); //! route delete
 
 module.exports = userRouter;
