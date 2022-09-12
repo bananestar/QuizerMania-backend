@@ -4,7 +4,7 @@ const yup = require('yup');
 const quizQuestionValidator = yup.object().shape({
 	quizQuestionID: yup.string().trim().required().uuid(),
 	quizID: yup.string().trim().required().uuid(),
-	questionID: yup.string().trim().required().uuid(),
+	questionID: yup.number().positive().integer().required(),
 });
 
 module.exports = { quizQuestionValidator };

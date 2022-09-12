@@ -19,3 +19,5 @@ quizRouter
 quizRouter.route('/allQuestionQuiz/:id').get(quizController.getAllQuestionQuiz) //! route getAllQuestionQuiz
 
 quizRouter.route('/addQuiz').post(authJWT(),quizController.addQuiz) //! route addQuiz
+
+module.exports = quizRouter
