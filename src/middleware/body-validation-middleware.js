@@ -1,6 +1,6 @@
 const { InvalidFieldErrorResponse } = require('../response-schemas/error-schema');
 
-const bodyValidationUser = (yupValidator, errorCode = 422) => {
+const bodyValidation = (yupValidator, errorCode = 422) => {
 	return (req, res, next) => {
 		yupValidator
 			.validate(req.body, { abortEarly: false })
@@ -27,4 +27,4 @@ const bodyValidationUser = (yupValidator, errorCode = 422) => {
 	};
 };
 
-module.exports = bodyValidationUser
+module.exports = bodyValidation

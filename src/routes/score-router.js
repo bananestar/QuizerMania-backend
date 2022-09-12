@@ -16,6 +16,6 @@ scoreRouter
 	.put(authJWT(), bodyValidation(scoreUpdatedValidator), scoreController.update) //! route update
 	.delete(authJWT(), scoreController.delete); //! route delete
 
-scoreRouter.route('/byUser/:id').getAll(scoreController.getByUser); //! route getAll by User
+scoreRouter.route('/byUser/:id').get(scoreController.getByUser); //! route getAll by User
 
 module.exports = scoreRouter
