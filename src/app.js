@@ -29,7 +29,13 @@ const router = require('./routes');
 
 app.use('/api', router);
 
-//! Listen 
+//! Listen
 app.listen(PORT, () => {
 	console.warn(`Listening => ${URL}${PORT}`);
 });
+
+const { seedUser, seedAdmin, seedTheme, seedQuiz, seedScore } = require('./utils/seed-utils');
+// seedUser(10)
+// seedScore(100)
+// seedTheme()
+// seedQuiz();
