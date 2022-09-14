@@ -137,6 +137,18 @@ const quizController = {
 	 */
 	delete: async (req, res) => {
 		const quizID = req.params.id;
+
+		const quizQuestion = await db.QuizQuestions.findAll({where:{
+			quizID: quizID
+		}})
+
+		quizQuestion.forEach(async el => {
+			const questionID = el.dataValues.questionID
+			await db.Question.destroy({
+				where: {questionID}
+			})
+		});
+
 		//Todo: request de suppression
 		const nbRow = await db.Quiz.destroy({
 			where: { quizID },

@@ -93,6 +93,7 @@ db.Question.hasMany(db.Reponse, {
 
 //? Reponse --> Question
 db.Reponse.belongsTo(db.Question,{
+	onDelete: 'CASCADE',
 	as:'question',
 	foreignKey: 'questionID',
 })
