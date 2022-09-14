@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 //! Génère un token
-const generateJWT = ({ id, pseudo, isAdmin }) => {
+const generateJWT = ({ userID, pseudo, isAdmin }) => {
 	return new Promise((resolve, reject) => {
-		const data = { id, pseudo, isAdmin };
+		const data = { userID, pseudo, isAdmin };
 		const secret = process.env.JWT_SECRET;
 		const options = {
 			algorithm: 'HS512',
@@ -31,7 +31,7 @@ const decodeJWT = (token) => {
 				return reject(error);
 			}
 			resolve({
-				id: payload.id,
+				id: payload.userID,
 				pseudo: payload.pseudo,
 				isAdmin: payload.isAdmin,
 			});

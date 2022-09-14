@@ -15,13 +15,13 @@ db.sequelize = sequelize;
 
 //! set-up des models
 
-db.User = require('./user')(sequelize)
-db.Quiz = require('./quiz')(sequelize)
-db.Score = require('./score')(sequelize)
-db.Theme = require('./theme')(sequelize)
-db.Question = require('./question')(sequelize)
-db.Reponse = require('./reponse')(sequelize)
-db.QuizQuestions = require('./quizQuestions')(sequelize)
+db.User = require('./user')(sequelize);
+db.Quiz = require('./quiz')(sequelize);
+db.Score = require('./score')(sequelize);
+db.Theme = require('./theme')(sequelize);
+db.Question = require('./question')(sequelize);
+db.Reponse = require('./reponse')(sequelize);
+db.QuizQuestions = require('./quizQuestions')(sequelize);
 
 //! Relation
 
@@ -30,42 +30,56 @@ db.User.hasMany(db.Score, {
 	foreignKey: 'userID',
 	onDelete: 'CASCADE',
 	allowNull: false,
-})
+});
 
 //? Quiz --> score
 db.Quiz.hasMany(db.Score, {
 	foreignKey: 'quizID',
 	onDelete: 'CASCADE',
 	allowNull: false,
-})
+});
 
-//? Quiz --> QuizQuestions
-db.Quiz.hasMany(db.QuizQuestions,{
+// //? Quiz --> QuizQuestions
+// db.Quiz.hasMany(db.QuizQuestions,{
+// 	foreignKey: 'quizID',
+// 	onDelete: 'CASCADE',
+// 	allowNull: false,
+// })
+
+// //? Question --> QuizQuestions
+// db.Question.hasMany(db.QuizQuestions,{
+// 	foreignKey: 'questionID',
+// 	onDelete: 'CASCADE',
+// 	allowNull: false,
+// })
+
+db.Quiz.belongsToMany(db.Question, {
+	through: 'quizquestions',
 	foreignKey: 'quizID',
 	onDelete: 'CASCADE',
 	allowNull: false,
-})
+});
 
-//? Question --> QuizQuestions
-db.Question.hasMany(db.QuizQuestions,{
+db.Question.belongsToMany(db.Quiz, {
+	through: 'quizquestions',
 	foreignKey: 'questionID',
 	onDelete: 'CASCADE',
 	allowNull: false,
-})
+});
 
 //? theme --> Question
-db.Theme.hasMany(db.Question,{
+db.Theme.hasMany(db.Question, {
 	foreignKey: 'themeID',
 	onDelete: 'CASCADE',
 	allowNull: false,
-})
+});
 
 //? Question --> Reponse
-db.Question.hasMany(db.Reponse,{
+db.Question.hasMany(db.Reponse, {
 	foreignKey: 'questionID',
 	onDelete: 'CASCADE',
 	allowNull: false,
-})
+});
 
 //! Export
 module.exports = db;

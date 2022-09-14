@@ -1,8 +1,6 @@
 const { Request, Response } = require('express');
 const { Question, Reponse, Theme } = require('../models');
 const db = require('../models');
-const question = require('../models/question');
-const reponse = require('../models/reponse');
 const { ErrorResponse, NotFoundErrorResponse } = require('../response-schemas/error-schema');
 const {
 	SuccessObjectResponse,
@@ -128,17 +126,15 @@ const quizController = {
 		const quizID = req.params.id;
 
 		//Todo: recherche du quiz dans la db avec les questions/réponses
-		const questionsAllByQuizz = await db.Quiz.findOne({
+		const questionsAllByQuizz = await db.Quiz.findAll({
 			where: { quizID },
 			include: [
 				{
-					model: question,
-					through: [],
-					include: [
-						{
-							model: reponse,
-						},
-					],
+					model: db.Question,
+					through: {attributes: []},
+					include: {
+						model: db.Reponse,
+					},
 				},
 			],
 		});

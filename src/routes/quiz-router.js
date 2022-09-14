@@ -16,7 +16,7 @@ quizRouter
 	.put(authJWT(), bodyValidation(quizUpdatedValidator), quizController.update) //! route update
 	.delete(authJWT(), quizController.delete); //! route delete
 
-quizRouter.route('/allQuestionQuiz/:id').get(quizController.getAllQuestionQuiz) //! route getAllQuestionQuiz
+quizRouter.route('/allquestionquiz/:id').get(quizController.getAllQuestionQuiz) //! route getAllQuestionQuiz
 
 quizRouter.route('/addQuiz').post(authJWT(),quizController.addQuiz) //! route addQuiz
 

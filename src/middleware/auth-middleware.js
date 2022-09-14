@@ -24,6 +24,7 @@ const authJWT = (options = { adminRight: true }) => {
 
 		//? test si l'utilisateur est admin
 		if (options.adminRight) {
+			console.log(tokenData);
 			const admin = await db.User.findOne({
 				where: {
 					[Op.and]: [{ userID: tokenData.id }, { isAdmin: true }],
