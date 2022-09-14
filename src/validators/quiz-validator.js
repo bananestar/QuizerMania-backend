@@ -2,7 +2,6 @@ const yup = require('yup');
 
 //! validator form add quiz
 const quizValidator = yup.object().shape({
-	quizID: yup.string().trim().required().uuid(),
 	name: yup.string().trim().required().max(100),
 	createdAt: yup.date().default(function () {
 		return new Date();

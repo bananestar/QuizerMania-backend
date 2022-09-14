@@ -32,12 +32,22 @@ db.User.hasMany(db.Score, {
 	allowNull: false,
 });
 
+db.Score.belongsTo(db.User,{
+	as:'user',
+	foreignKey: 'userID',
+})
+
 //? Quiz --> score
 db.Quiz.hasMany(db.Score, {
 	foreignKey: 'quizID',
 	onDelete: 'CASCADE',
 	allowNull: false,
 });
+
+db.Score.belongsTo(db.Quiz,{
+	as:'quiz',
+	foreignKey: 'quizID',
+})
 
 // //? Quiz --> QuizQuestions
 // db.Quiz.hasMany(db.QuizQuestions,{
@@ -74,12 +84,22 @@ db.Theme.hasMany(db.Question, {
 	allowNull: false,
 });
 
+db.Question.belongsTo(db.Theme,{
+	as:'theme',
+	foreignKey: 'themeID',
+})
+
 //? Question --> Reponse
 db.Question.hasMany(db.Reponse, {
 	foreignKey: 'questionID',
 	onDelete: 'CASCADE',
 	allowNull: false,
 });
+
+db.Reponse.belongsTo(db.Question,{
+	as:'question',
+	foreignKey: 'questionID',
+})
 
 //! Export
 module.exports = db;

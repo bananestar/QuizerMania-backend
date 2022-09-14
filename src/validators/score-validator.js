@@ -2,7 +2,6 @@ const yup = require('yup');
 
 //! validator form add score
 const scoreValidator = yup.object().shape({
-	scoreID: yup.string().trim().required().uuid(),
 	userID: yup.string().trim().required().uuid(),
 	quizID: yup.string().trim().required().uuid(),
 	score: yup.number().required().positive(),

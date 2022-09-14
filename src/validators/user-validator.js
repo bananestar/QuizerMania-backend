@@ -4,7 +4,6 @@ const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
 
 //! validator form add user
 const userValidator = yup.object().shape({
-	userID: yup.string().trim().required().uuid(),
 	pseudo: yup.string().trim().required().max(50),
 	email: yup.string().email().trim().required().max(70),
 	password: yup.string().trim().required().max(60),

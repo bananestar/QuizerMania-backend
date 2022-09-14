@@ -18,13 +18,14 @@ const scoreController = {
 	 */
 	getAll: async (req, res) => {
 		//Todo: recherche tout les scores dans la db
-		const data = await db.Score.findAndCountAll({
+		const data = await db.User.findAndCountAll({
+			attributes: ['pseudo'],
 			include: [
 				{
-					models: user,
-					through: ['pseudo'],
+					model: db.Score,
+					attributes: { exclude: ['userID', 'quizID'] },
+					include: [{ model: db.Quiz, as: 'quiz' }],
 				},
-				{ model: quiz, through: ['name'] },
 			],
 		});
 		return res.status(200).json(new SuccessArrayResponse(data.rows, data.count));
@@ -40,9 +41,10 @@ const scoreController = {
 		//Todo: recherche du score dans la db
 		const score = await db.Score.findOne({
 			where: { scoreID },
+			attributes: { exclude: ['userID', 'quizID'] },
 			include: [
-				{ model: user, through: ['pseudo'] },
-				{ model: quiz, through: ['name'] },
+				{ model: db.User, as:'user', attributes: ['pseudo'], },
+				{ model: db.Quiz, as:'quiz', attributes: ['name'], },
 			],
 		});
 
