@@ -64,10 +64,44 @@ const quizController = {
 	addQuiz: async (req, res) => {
 		const data = req.body;
 		//Todo: Ajout du quiz à la db
-		const newQuiz = await db.Quiz.create(data, {
-			include: [{ association: Question, include: [{ Reponse }, { Theme }] }],
+		// const newQuiz = await db.Quiz.create(data, {
+		// 	include: [{ association: Question, include: [{ Reponse }, { Theme }] }],
+		// });
+		// return res.status(201).json(new SuccessObjectResponse(newQuiz, 201));
+
+		const { quizID } = await db.Quiz.create(data);
+		data.question.forEach(async (question) => {
+			const { questionID } = await db.Question.create(question);
+			await db.QuizQuestions.create({ quizID: quizID, questionID: questionID });
+			question.reponse.forEach(async (rep) => {
+				const dataRep = {
+					questionID: questionID,
+					libelle: rep.libelle,
+					isValid: rep.isValid,
+				};
+				await db.Reponse.create(dataRep);
+			});
 		});
-		return res.status(201).json(new SuccessObjectResponse(newQuiz, 201));
+
+		const questionsAllByQuizz = await db.Quiz.findAll({
+			where: { quizID },
+			include: [
+				{
+					model: db.Question,
+					through: { attributes: [] },
+					include: {
+						model: db.Reponse,
+					},
+				},
+			],
+		});
+
+		//? cas si le quiz est introuvable ou n'existe pas
+		if (!questionsAllByQuizz) {
+			return res.status(404).json(new NotFoundErrorResponse('Quiz not found'));
+		}
+
+		return res.status(200).json(new SuccessObjectResponse(questionsAllByQuizz));
 	},
 
 	//! mise à jour d'un quiz
@@ -131,7 +165,7 @@ const quizController = {
 			include: [
 				{
 					model: db.Question,
-					through: {attributes: []},
+					through: { attributes: [] },
 					include: {
 						model: db.Reponse,
 					},
