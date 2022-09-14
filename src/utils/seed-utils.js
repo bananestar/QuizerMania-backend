@@ -1,5 +1,4 @@
 const seedController = require('../controllers/seed-controller');
-const reponse = require('../models/reponse');
 
 const seedUser = async (loop = 1) => {
 	const message = [];
@@ -12,8 +11,6 @@ const seedUser = async (loop = 1) => {
 			console.log(error);
 		}
 	}
-
-    console.log(message);
 	return message
 };
 

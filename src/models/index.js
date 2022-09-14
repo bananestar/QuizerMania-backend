@@ -53,18 +53,22 @@ db.Score.belongsTo(db.Quiz,{
 
 //? Quiz --> quizquestions --> Question
 db.Quiz.belongsToMany(db.Question, {
-	through: 'quizquestions',
+	through: 'quizQuestions',
 	foreignKey: 'quizID',
+	otherKey: 'questionID',
 	onDelete: 'CASCADE',
 	allowNull: false,
+	timestamps: false,
 });
 
 //? Question --> quizquestions --> Quiz
 db.Question.belongsToMany(db.Quiz, {
-	through: 'quizquestions',
+	through: 'quizQuestions',
 	foreignKey: 'questionID',
+	otherKey: 'quizID',
 	onDelete: 'CASCADE',
 	allowNull: false,
+	timestamps: false,
 });
 
 //? theme --> Question

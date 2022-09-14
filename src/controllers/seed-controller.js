@@ -63,25 +63,22 @@ const seedController = {
 	 * @param {Response} res
 	 */
 	AddQuiz: async (req, res) => {
-		console.log(req);
-
-		const { quizID } = await db.Quiz.create(req[0]);
-
 		try {
-			req[0].question.forEach(async (quest) => {
-				console.log(quest);
-				const { questionID } = await db.Question.create(quest);
-				const QuizQuestion = await db.QuizQuestions.create({
+			const { quizID, name } = await db.Quiz.create(req[0]);
+			req[0].question.forEach(async (question) => {
+				const { questionID } = await db.Question.create(question);
+				await db.QuizQuestions.create({
 					quizID: quizID,
 					questionID: questionID,
 				});
-				quest.reponse.forEach(async (rep) => {
-					const reponse = await db.Reponse.create(rep);
+				question.reponse.forEach(async (rep) => {
+					await db.Reponse.create(rep);
 				});
 			});
+			return name
 		} catch (error) {
-            console.log(error);
-        }
+			console.log(error);
+		}
 	},
 
 	/**
