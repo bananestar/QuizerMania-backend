@@ -32,6 +32,7 @@ db.User.hasMany(db.Score, {
 	allowNull: false,
 });
 
+//? Score --> User
 db.Score.belongsTo(db.User,{
 	as:'user',
 	foreignKey: 'userID',
@@ -44,25 +45,13 @@ db.Quiz.hasMany(db.Score, {
 	allowNull: false,
 });
 
+//? score --> Quiz
 db.Score.belongsTo(db.Quiz,{
 	as:'quiz',
 	foreignKey: 'quizID',
 })
 
-// //? Quiz --> QuizQuestions
-// db.Quiz.hasMany(db.QuizQuestions,{
-// 	foreignKey: 'quizID',
-// 	onDelete: 'CASCADE',
-// 	allowNull: false,
-// })
-
-// //? Question --> QuizQuestions
-// db.Question.hasMany(db.QuizQuestions,{
-// 	foreignKey: 'questionID',
-// 	onDelete: 'CASCADE',
-// 	allowNull: false,
-// })
-
+//? Quiz --> quizquestions --> Question
 db.Quiz.belongsToMany(db.Question, {
 	through: 'quizquestions',
 	foreignKey: 'quizID',
@@ -70,6 +59,7 @@ db.Quiz.belongsToMany(db.Question, {
 	allowNull: false,
 });
 
+//? Question --> quizquestions --> Quiz
 db.Question.belongsToMany(db.Quiz, {
 	through: 'quizquestions',
 	foreignKey: 'questionID',
@@ -84,6 +74,7 @@ db.Theme.hasMany(db.Question, {
 	allowNull: false,
 });
 
+//? Question --> theme
 db.Question.belongsTo(db.Theme,{
 	as:'theme',
 	foreignKey: 'themeID',
@@ -96,6 +87,7 @@ db.Question.hasMany(db.Reponse, {
 	allowNull: false,
 });
 
+//? Reponse --> Question
 db.Reponse.belongsTo(db.Question,{
 	as:'question',
 	foreignKey: 'questionID',
