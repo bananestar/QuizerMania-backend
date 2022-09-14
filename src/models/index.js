@@ -15,13 +15,13 @@ db.sequelize = sequelize;
 
 //! set-up des models
 
-db.User = require('./user')(sequelize)
-db.Quiz = require('./quiz')(sequelize)
-db.Score = require('./score')(sequelize)
-db.Theme = require('./theme')(sequelize)
-db.Question = require('./question')(sequelize)
-db.Reponse = require('./reponse')(sequelize)
-db.QuizQuestions = require('./quizQuestions')(sequelize)
+db.User = require('./user')(sequelize);
+db.Quiz = require('./quiz')(sequelize);
+db.Score = require('./score')(sequelize);
+db.Theme = require('./theme')(sequelize);
+db.Question = require('./question')(sequelize);
+db.Reponse = require('./reponse')(sequelize);
+db.QuizQuestions = require('./quizQuestions')(sequelize);
 
 //! Relation
 
@@ -30,6 +30,12 @@ db.User.hasMany(db.Score, {
 	foreignKey: 'userID',
 	onDelete: 'CASCADE',
 	allowNull: false,
+});
+
+//? Score --> User
+db.Score.belongsTo(db.User,{
+	as:'user',
+	foreignKey: 'userID',
 })
 
 //? Quiz --> score
@@ -37,34 +43,59 @@ db.Quiz.hasMany(db.Score, {
 	foreignKey: 'quizID',
 	onDelete: 'CASCADE',
 	allowNull: false,
-})
+});
 
-//? Quiz --> QuizQuestions
-db.Quiz.hasMany(db.QuizQuestions,{
+//? score --> Quiz
+db.Score.belongsTo(db.Quiz,{
+	as:'quiz',
 	foreignKey: 'quizID',
-	onDelete: 'CASCADE',
-	allowNull: false,
 })
 
-//? Question --> QuizQuestions
-db.Question.hasMany(db.QuizQuestions,{
-	foreignKey: 'questionID',
+//? Quiz --> quizquestions --> Question
+db.Quiz.belongsToMany(db.Question, {
+	through: 'quizQuestions',
+	foreignKey: 'quizID',
+	otherKey: 'questionID',
 	onDelete: 'CASCADE',
 	allowNull: false,
-})
+	timestamps: false,
+});
+
+//? Question --> quizquestions --> Quiz
+db.Question.belongsToMany(db.Quiz, {
+	through: 'quizQuestions',
+	foreignKey: 'questionID',
+	otherKey: 'quizID',
+	onDelete: 'CASCADE',
+	allowNull: false,
+	timestamps: false,
+});
 
 //? theme --> Question
-db.Theme.hasMany(db.Question,{
+db.Theme.hasMany(db.Question, {
 	foreignKey: 'themeID',
 	onDelete: 'CASCADE',
 	allowNull: false,
+});
+
+//? Question --> theme
+db.Question.belongsTo(db.Theme,{
+	as:'theme',
+	foreignKey: 'themeID',
 })
 
 //? Question --> Reponse
-db.Question.hasMany(db.Reponse,{
+db.Question.hasMany(db.Reponse, {
 	foreignKey: 'questionID',
 	onDelete: 'CASCADE',
 	allowNull: false,
+});
+
+//? Reponse --> Question
+db.Reponse.belongsTo(db.Question,{
+	onDelete: 'CASCADE',
+	as:'question',
+	foreignKey: 'questionID',
 })
 
 //! Export
