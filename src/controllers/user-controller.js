@@ -8,8 +8,7 @@ const {
 	SuccessArrayResponse,
 } = require('../response-schemas/success-schema');
 
-
-//Todo: getAll, get, update, delete 
+//Todo: getAll, get, update, delete
 const userController = {
 	//! recuperation de tout les utilisateurs
 	/**
@@ -82,29 +81,59 @@ const userController = {
 			isAdmin: data.isAdmin,
 		});
 
-        return res.status(200).json(new SuccessObjectResponse(token));
+		return res.status(200).json(new SuccessObjectResponse(token));
 	},
-
-    //! suppression d'un utilisateur
-    /**
+	/**
 	 *
 	 * @param {Request} req
 	 * @param {Response} res
 	 */
-    delete: async (req,res)=>{
-        const id = parseInt(req.params.id);
-        //Todo: request de suppression
+	updateIMG: async (req, res) => {
+		const userID = req.params.id;
+		const data = {
+			img: req.file.publicUrl,
+		};
+
+		const updatedUser = await db.User.update(data, {
+			where: { userID },
+			returning: true,
+		});
+
+		//? cas Erreur: utilisateur introuvable
+		if (!updatedUser[1]) {
+			return res.status(400).json(new ErrorResponse('BAD REQUEST'));
+		}
+
+		//? creation token
+		const token = await generateJWT({
+			userID: data.userID,
+			pseudo: data.pseudo,
+			isAdmin: data.isAdmin,
+		});
+
+		return res.status(200).json(new SuccessObjectResponse(token));
+	},
+
+	//! suppression d'un utilisateur
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	delete: async (req, res) => {
+		const id = parseInt(req.params.id);
+		//Todo: request de suppression
 		const nbRow = await db.User.destroy({
 			where: { id },
 		});
 
-        //? cas Erreur: utilisateur introuvable
+		//? cas Erreur: utilisateur introuvable
 		if (nbRow !== 1) {
 			return res.status(404).json(new NotFoundErrorResponse('User not found'));
 		}
 
 		return res.sendStatus(204);
-    }
+	},
 };
 
 module.exports = userController;
