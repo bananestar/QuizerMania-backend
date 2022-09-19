@@ -51,17 +51,7 @@ const userController = {
 	 */
 	update: async (req, res) => {
 		const userID = req.params.id;
-		const dataTemp = req.validatedData;
-		const imgURL = req.file.publicUrl;
-
-		const hashedPassword = await bcrypt.hash(dataTemp.password, 10);
-		//? Preparation des donnée
-		const data = {
-			pseudo: dataTemp.pseudo,
-			email: dataTemp.email,
-			password: hashedPassword,
-			img: imgURL,
-		};
+		const data = req.validatedData;
 
 		//Todo: request de mise à jour
 		const updatedUser = await db.User.update(data, {
@@ -93,6 +83,41 @@ const userController = {
 		const data = {
 			img: req.file.publicUrl,
 		};
+
+		const updatedUser = await db.User.update(data, {
+			where: { userID },
+			returning: true,
+		});
+
+		//? cas Erreur: utilisateur introuvable
+		if (!updatedUser[1]) {
+			return res.status(400).json(new ErrorResponse('BAD REQUEST'));
+		}
+
+		//? creation token
+		const token = await generateJWT({
+			userID: data.userID,
+			pseudo: data.pseudo,
+			isAdmin: data.isAdmin,
+		});
+
+		return res.status(200).json(new SuccessObjectResponse(token));
+	},
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	updatePWD: async(req,res)=>{
+		const userID = req.params.id;
+		const dataTemp = req.body;
+
+		const hashedPassword = await bcrypt.hash(dataTemp.password, 10);
+
+
+		const data = {
+			password: hashedPassword
+		}
 
 		const updatedUser = await db.User.update(data, {
 			where: { userID },

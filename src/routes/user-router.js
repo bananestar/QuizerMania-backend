@@ -31,5 +31,6 @@ userRouter
 	.delete(authJWT(), userController.delete); //! route delete
 
 userRouter.route('/updatedIMG/:id').post(authJWT(),multer.single('avatar'),userController.updateIMG)
+userRouter.route('/UpdatedPwd/:id').put(authJWT(),userController.updatePWD)
 
 module.exports = userRouter;
