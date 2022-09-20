@@ -43,8 +43,8 @@ const scoreController = {
 			where: { scoreID },
 			attributes: { exclude: ['userID', 'quizID'] },
 			include: [
-				{ model: db.User, as:'user', attributes: ['pseudo'], },
-				{ model: db.Quiz, as:'quiz', attributes: ['name'], },
+				{ model: db.User, as: 'user', attributes: ['pseudo'] },
+				{ model: db.Quiz, as: 'quiz', attributes: ['name'] },
 			],
 		});
 
@@ -64,9 +64,18 @@ const scoreController = {
 	getByUser: async (req, res) => {
 		const userID = req.params.id;
 		const score = await db.Score.findAll({
+			attributes: { exclude: ['userID','quizID'] },
 			include: [
-				{ model: user, through: ['pseudo'], where: { userID } },
-				{ model: quiz, through: ['name'] },
+				{
+					as: 'user',
+					model: db.User,
+					where: { userID: userID },
+					attributes: ['userID','pseudo']
+				},
+				{
+					as:'quiz',
+					model: db.Quiz,
+				},
 			],
 		});
 
