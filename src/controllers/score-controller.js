@@ -64,17 +64,47 @@ const scoreController = {
 	getByUser: async (req, res) => {
 		const userID = req.params.id;
 		const score = await db.Score.findAll({
-			attributes: { exclude: ['userID','quizID'] },
+			attributes: { exclude: ['userID', 'quizID'] },
 			include: [
 				{
 					as: 'user',
 					model: db.User,
 					where: { userID: userID },
-					attributes: ['userID','pseudo']
+					attributes: ['userID', 'pseudo'],
 				},
 				{
-					as:'quiz',
+					as: 'quiz',
 					model: db.Quiz,
+				},
+			],
+		});
+
+		//? cas si le score est introuvable ou n'existe pas
+		if (!score) {
+			return res.status(404).json(new NotFoundErrorResponse('Score not found'));
+		}
+
+		return res.status(200).json(new SuccessObjectResponse(score));
+	},
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	 getByQuiz: async (req, res) => {
+		const quizID = req.params.id;
+		const score = await db.Score.findAll({
+			attributes: { exclude: ['userID', 'quizID'] },
+			include: [
+				{
+					as: 'user',
+					model: db.User,
+					attributes: ['userID', 'pseudo'],
+				},
+				{
+					as: 'quiz',
+					model: db.Quiz,
+					where: { quizID: quizID },
 				},
 			],
 		});
@@ -97,6 +127,48 @@ const scoreController = {
 		//Todo: Ajout du score à la db
 		const newScore = await db.Score.create(data);
 		return res.status(201).json(new SuccessObjectResponse(newScore, 201));
+	},
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	addByUser: async (req, res) => {
+		const data = req.validatedData;
+		// console.log(data);
+		const score = await db.Score.findAll({
+			attributes: { exclude: ['userID', 'quizID'] },
+			include: [
+				{
+					as: 'user',
+					model: db.User,
+					where: { userID: data.userID },
+					attributes: ['userID', 'pseudo'],
+				},
+				{
+					as: 'quiz',
+					model: db.Quiz,
+				},
+			],
+		});
+		if (!score) {
+			const newScore = await db.Score.create(data);
+			return res.status(201).json(new SuccessObjectResponse(newScore, 201));
+		}
+
+		const scoreID = score[0].scoreID;
+
+		const updateScore = await db.Score.update(data, {
+			where: { scoreID },
+			returning: true,
+		});
+
+		if (!updateScore[1]) {
+			return res.status(400).json(new ErrorResponse('BAD REQUEST'));
+		}
+
+		const updateValue = await db.Score.findOne({ where: { scoreID } });
+		return res.status(200).json(new SuccessObjectResponse(updateValue));
 	},
 	//! mise à jour d'un score
 	/**

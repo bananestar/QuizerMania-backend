@@ -11,11 +11,16 @@ scoreRouter
 	.post(authJWT(), bodyValidation(scoreValidator), scoreController.add); //! route add
 
 scoreRouter
+	.route('/addByUser')
+	.put(authJWT(), bodyValidation(scoreUpdatedValidator), scoreController.addByUser);
+
+scoreRouter.route('/byUser/:id').get(scoreController.getByUser); //! route getAll by User
+scoreRouter.route('/byQuiz/:id').get(scoreController.getByQuiz); //! route getAll by Quiz
+
+scoreRouter
 	.route('/:id') //! url (../score/example.uuid)
 	.get(scoreController.get) //! route get
 	.put(authJWT(), bodyValidation(scoreUpdatedValidator), scoreController.update) //! route update
 	.delete(authJWT(), scoreController.delete); //! route delete
 
-scoreRouter.route('/byUser/:id').get(scoreController.getByUser); //! route getAll by User
-
-module.exports = scoreRouter
+module.exports = scoreRouter;

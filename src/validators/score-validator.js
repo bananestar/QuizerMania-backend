@@ -15,7 +15,7 @@ const scoreValidator = yup.object().shape({
 
 //! validator form update score
 const scoreUpdatedValidator = yup.object().shape({
-	scoreID: yup.string().trim().required().uuid(),
+	scoreID: yup.string().trim().uuid(),
 	userID: yup.string().trim().required().uuid(),
 	quizID: yup.string().trim().required().uuid(),
 	score: yup.number().positive(),
