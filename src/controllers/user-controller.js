@@ -151,7 +151,7 @@ const userController = {
 		console.log(id);
 		//Todo: request de suppression
 		const nbRow = await db.User.destroy({
-			where: { id },
+			where: { userID:id },
 		});
 
 		//? cas Erreur: utilisateur introuvable
