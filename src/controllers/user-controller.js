@@ -146,7 +146,9 @@ const userController = {
 	 * @param {Response} res
 	 */
 	delete: async (req, res) => {
-		const id = parseInt(req.params.id);
+		const id = req.params.id;
+
+		console.log(id);
 		//Todo: request de suppression
 		const nbRow = await db.User.destroy({
 			where: { id },
