@@ -43,6 +43,30 @@ const userController = {
 		return res.status(200).json(new SuccessObjectResponse(user));
 	},
 
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	add: async (req, res) => {
+		const dataTemp = req.validatedData;
+		console.log(dataTemp);
+		const hashedPassword = await bcrypt.hash(dataTemp.password, 10);
+
+		const data = {
+			updatedAt: dataTemp.updatedAt,
+			createdAt: dataTemp.createdAt,
+			isAdmin: dataTemp.isAdmin,
+			password: hashedPassword,
+			email: dataTemp.email,
+			pseudo: dataTemp.pseudo,
+		};
+
+		const user = await db.User.create(data);
+
+		return res.status(201).json(new SuccessObjectResponse(user, 201));
+	},
+
 	//! mise à jour d'un utilisateur
 	/**
 	 *
@@ -108,16 +132,15 @@ const userController = {
 	 * @param {Request} req
 	 * @param {Response} res
 	 */
-	updatePWD: async(req,res)=>{
+	updatePWD: async (req, res) => {
 		const userID = req.params.id;
 		const dataTemp = req.body;
 
 		const hashedPassword = await bcrypt.hash(dataTemp.password, 10);
 
-
 		const data = {
-			password: hashedPassword
-		}
+			password: hashedPassword,
+		};
 
 		const updatedUser = await db.User.update(data, {
 			where: { userID },
@@ -151,7 +174,7 @@ const userController = {
 		console.log(id);
 		//Todo: request de suppression
 		const nbRow = await db.User.destroy({
-			where: { userID:id },
+			where: { userID: id },
 		});
 
 		//? cas Erreur: utilisateur introuvable
