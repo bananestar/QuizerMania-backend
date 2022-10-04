@@ -13,11 +13,11 @@ quizRouter
 quizRouter
 	.route('/:id') //! url (../quiz/example.uuid)
 	.get(quizController.get) //! route get
-	.put(authJWT(), bodyValidation(quizUpdatedValidator), quizController.update) //! route update
 	.delete(authJWT(), quizController.delete); //! route delete
 
 quizRouter.route('/allquestionquiz/:id').get(quizController.getAllQuestionQuiz) //! route getAllQuestionQuiz
 
 quizRouter.route('/addQuiz').post(authJWT(),quizController.addQuiz) //! route addQuiz
+quizRouter.route('/updatedQuiz/:id').put(quizController.updateQuiz) //! route addQuiz
 
 module.exports = quizRouter

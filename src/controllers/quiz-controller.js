@@ -103,6 +103,82 @@ const quizController = {
 
 		return res.status(200).json(new SuccessObjectResponse(questionsAllByQuizz));
 	},
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	updateQuiz: async (req, res) => {
+		const quizID = req.params.id;
+		const data = req.body;
+
+		const quiz = {
+			quizID: quizID,
+			name: data.name,
+			createdAt: data.createdAt,
+			updatedAt: new Date(),
+		};
+
+		const updatedQuiz = await db.Quiz.update(quiz, {
+			where: { quizID },
+			returning: true,
+		});
+
+		if (!updatedQuiz[1]) {
+			console.log('test 1');
+		}
+
+		data.questions.forEach(async (question) => {
+			const searchQuestion = await db.Question.findOne({
+				where: { questionID: question.questionID },
+			});
+
+			if (searchQuestion) {
+				const quest = {
+					themeID: question.themeID,
+					libelle: question.libelle,
+				};
+
+				const updatedQuestion = await db.Question.update(quest, {
+					where: { questionID: question.questionID },
+					returning: true,
+				});
+
+				question.reponses.forEach(async (reponse) => {
+					const rep = {
+						questionID: reponse.questionID,
+						isValid: reponse.isValid,
+						libelle: reponse.libelle,
+					};
+
+					const updatedReponse = await db.Reponse.update(rep, {
+						where: { reponseID: reponse.reponseID },
+						returning: true,
+					});
+				});
+			}else{
+				const quest = {
+					themeID: question.themeID,
+					libelle: question.libelle,
+				};
+
+				const { questionID } = await db.Question.create(quest);
+
+				await db.QuizQuestions.create({ quizID: quizID, questionID: questionID });
+
+				question.reponses.forEach(async (rep) => {
+					const dataRep = {
+						questionID: questionID,
+						libelle: rep.libelle,
+						isValid: rep.isValid,
+					};
+					await db.Reponse.create(dataRep);
+				});
+			}
+		});
+
+		return res.sendStatus(200);
+	},
 
 	//! mise à jour d'un quiz
 	/**
@@ -138,15 +214,17 @@ const quizController = {
 	delete: async (req, res) => {
 		const quizID = req.params.id;
 
-		const quizQuestion = await db.QuizQuestions.findAll({where:{
-			quizID: quizID
-		}})
+		const quizQuestion = await db.QuizQuestions.findAll({
+			where: {
+				quizID: quizID,
+			},
+		});
 
-		quizQuestion.forEach(async el => {
-			const questionID = el.dataValues.questionID
+		quizQuestion.forEach(async (el) => {
+			const questionID = el.dataValues.questionID;
 			await db.Question.destroy({
-				where: {questionID}
-			})
+				where: { questionID },
+			});
 		});
 
 		//Todo: request de suppression
