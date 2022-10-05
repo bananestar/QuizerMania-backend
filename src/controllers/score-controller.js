@@ -212,6 +212,20 @@ const scoreController = {
 
 		return res.sendStatus(204);
 	},
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	 deleteByQuiz: async (req, res) => {
+		const quizID = req.params.id;
+		//Todo: request de suppression
+		const nbRow = await db.Score.destroy({
+			where: { quizID:quizID },
+		});
+
+		return res.sendStatus(204);
+	},
 };
 
 module.exports = scoreController;

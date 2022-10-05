@@ -15,7 +15,7 @@ scoreRouter
 	.put(authJWT(), bodyValidation(scoreUpdatedValidator), scoreController.addByUser);
 
 scoreRouter.route('/byUser/:id').get(scoreController.getByUser); //! route getAll by User
-scoreRouter.route('/byQuiz/:id').get(scoreController.getByQuiz); //! route getAll by Quiz
+scoreRouter.route('/byQuiz/:id').get(scoreController.getByQuiz).delete(authJWT(), scoreController.deleteByQuiz); //! route getAll by Quiz
 
 scoreRouter
 	.route('/:id') //! url (../score/example.uuid)

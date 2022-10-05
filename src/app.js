@@ -37,6 +37,6 @@ app.listen(PORT, () => {
 const { seedUser, seedAdmin, seedTheme, seedQuiz, seedScore } = require('./utils/seed-utils');
 // seedUser(10)
 // seedAdmin()
-// seedScore(100)
+// seedScore(10)
 // seedTheme()
 // seedQuiz();
