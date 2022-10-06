@@ -120,6 +120,82 @@ const seedController = {
 
 		return await db.Score.create(data);
 	},
+
+	//! recuperation de tout les quiz
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	 getAll: async (req, res) => {
+		//Todo: recherche tout les quiz dans la db
+		const data = await db.Quiz.findAndCountAll();
+		return data
+	},
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	getAllQ: async (req, res) => {
+        //Todo: recherche tout les questions dans la db
+		const data = await db.Question.findAndCountAll();
+		return data
+    },
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	getAllR: async (req, res) => {
+		//Todo: recherche tout les reponses dans la db
+		const data = await db.Reponse.findAndCountAll();
+		return data
+	},
+	//! ajout d'un quiz avec question/reponse
+	/**
+	 *
+	 * @param {Request} req
+	 * @param {Response} res
+	 */
+	 addQuizV2: async (req, res) => {
+		const data = req;
+
+		const { quizID } = await db.Quiz.create(data);
+		data.question.forEach(async (question) => {
+			const { questionID } = await db.Question.create(question);
+			await db.QuizQuestions.create({ quizID: quizID, questionID: questionID });
+			question.reponse.forEach(async (rep) => {
+				const dataRep = {
+					questionID: questionID,
+					libelle: rep.libelle,
+					isValid: rep.isValid,
+				};
+				await db.Reponse.create(dataRep);
+			});
+		});
+
+		const questionsAllByQuizz = await db.Quiz.findAll({
+			where: { quizID },
+			include: [
+				{
+					model: db.Question,
+					through: { attributes: [] },
+					include: {
+						model: db.Reponse,
+					},
+				},
+			],
+		});
+
+		// //? cas si le quiz est introuvable ou n'existe pas
+		// if (!questionsAllByQuizz) {
+		// 	return res.status(404).json(new NotFoundErrorResponse('Quiz not found'));
+		// }
+
+		// return res.status(200).json(new SuccessObjectResponse(questionsAllByQuizz));
+		return 'ok'
+	},
 };
 
 module.exports = seedController;

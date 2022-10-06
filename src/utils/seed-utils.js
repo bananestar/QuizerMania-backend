@@ -1,3 +1,4 @@
+const axios = require('axios');
 const seedController = require('../controllers/seed-controller');
 
 const seedUser = async (loop = 1) => {
@@ -11,7 +12,7 @@ const seedUser = async (loop = 1) => {
 			console.log(error);
 		}
 	}
-	return message
+	return message;
 };
 
 const seedAdmin = async () => {
@@ -565,4 +566,100 @@ const seedScore = async (loop = 1) => {
 	return message;
 };
 
-module.exports = { seedUser, seedAdmin, seedTheme, seedQuiz, seedScore };
+const seedQuizV2 = async (loop = 1) => {
+	const category = [
+		'arts',
+		'literature',
+		'arts_and_literature',
+		'movies',
+		'film',
+		'film_and_tv',
+		'food_and_drink',
+		'food',
+		'drink',
+		'general_knowledge',
+		'geography',
+		'history',
+		'music',
+		'science',
+		'society_and_culture',
+		'society',
+		'culture',
+		'sports',
+		'sport',
+	];
+
+	const difficulty = ['easy', 'medium', 'hard'];
+
+	const url = 'https://the-trivia-api.com/api/questions';
+
+	for (let index = 0; index < loop; index++) {
+		const dataRaw = await axios
+			.get(url, {
+				params: {
+					categories: category[Math.floor(Math.random() * category.length)],
+					limit: 20,
+					difficulty: difficulty[Math.floor(Math.random() * difficulty.length)],
+				},
+			})
+			.then(({ data }) => {
+				return data;
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		const allQuiz = await seedController.getAll();
+
+		const allQuestion = await seedController.getAllQ();
+		const allReponse = await seedController.getAllR();
+
+		let countQ = allQuestion.count;
+		let countR = allReponse.count;
+
+		const questions = [];
+
+		dataRaw.forEach((el) => {
+			const reponse = [];
+			countQ++;
+
+			el.incorrectAnswers.forEach((e) => {
+				countR++;
+
+				const rep = {
+					reponseID: countR,
+					questionID: countQ,
+					libelle: e,
+					isValid: false,
+				};
+
+				reponse.push(rep);
+			});
+			reponse.push({
+				reponseID: countR++,
+				questionID: countQ,
+				libelle: el.correctAnswer,
+				isValid: true,
+			});
+
+			reponse.sort(() => Math.random() - 0.5);
+
+			questions.push({ questionID: countQ, libelle: el.question, themeID: 1, reponse: reponse });
+		});
+
+		const data = {
+			name: dataRaw[0].category+' '+allQuiz.count++,
+			createdAt: new Date(),
+			updatedAt: new Date(),
+			question: questions,
+		};
+
+		try {
+			await seedController.addQuizV2(data);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+};
+
+module.exports = { seedUser, seedAdmin, seedTheme, seedQuiz, seedScore, seedQuizV2 };

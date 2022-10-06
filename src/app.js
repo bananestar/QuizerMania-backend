@@ -34,9 +34,10 @@ app.listen(PORT, () => {
 	console.warn(`Listening => ${URL}${PORT}`);
 });
 
-const { seedUser, seedAdmin, seedTheme, seedQuiz, seedScore } = require('./utils/seed-utils');
+const { seedUser, seedAdmin, seedTheme, seedQuiz, seedScore, seedQuizV2 } = require('./utils/seed-utils');
 // seedUser(10)
 // seedAdmin()
 // seedScore(10)
 // seedTheme()
 // seedQuiz();
+// seedQuizV2(50)
