@@ -557,13 +557,13 @@ const seedScore = async (loop = 1) => {
 
 	for (let index = 0; index <= loop; index++) {
 		try {
-			await seedController.AddScore();
+			message.push(await seedController.AddScore());
 		} catch (error) {
 			console.log(error);
 		}
 	}
 
-	return message;
+	return console.log(message);;
 };
 
 const seedQuizV2 = async (loop = 1) => {
@@ -594,10 +594,11 @@ const seedQuizV2 = async (loop = 1) => {
 	const url = 'https://the-trivia-api.com/api/questions';
 
 	for (let index = 0; index < loop; index++) {
+		const categories = category[Math.floor(Math.random() * category.length)]
 		const dataRaw = await axios
 			.get(url, {
 				params: {
-					categories: category[Math.floor(Math.random() * category.length)],
+					categories: categories,
 					limit: 20,
 					difficulty: difficulty[Math.floor(Math.random() * difficulty.length)],
 				},
@@ -646,9 +647,75 @@ const seedQuizV2 = async (loop = 1) => {
 
 			questions.push({ questionID: countQ, libelle: el.question, themeID: 1, reponse: reponse });
 		});
+		let img;
+		switch (categories) {
+			case 'arts':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizArt.png?alt=media&token=0be6dcb2-c9ca-4b98-b781-b44ada3003e2';
+				break;
+			case 'literature':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizLitterature.png?alt=media&token=4cb3cc2d-4052-4a99-bd3b-31832fd05652';
+				break;
+			case 'arts_and_literature':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizLitterature.png?alt=media&token=4cb3cc2d-4052-4a99-bd3b-31832fd05652';
+				break;
+			case 'movies':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizMovie.png?alt=media&token=5ff72211-7da8-4974-86ef-8de3e1bdac6b';
+				break;
+			case 'film':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizMovie.png?alt=media&token=5ff72211-7da8-4974-86ef-8de3e1bdac6b';
+				break;
+			case 'film_and_tv':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizFilm%26TV.png?alt=media&token=d1e61247-52ca-485f-8b5a-199877ecf7c9';
+				break;
+			case 'food_and_drink':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizFood%26Drink.png?alt=media&token=bbbb7654-177b-455e-908e-5a7b940e5610';
+				break;
+			case 'food':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizFood.png?alt=media&token=ad67bdd0-1709-471a-860e-59762bbf1fcc';
+				break;
+			case 'drink':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizDrink.png?alt=media&token=cc1f6b1d-e5bd-4641-b2af-4ce000298bf1';
+				break;
+			case 'general_knowledge':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quiz-dans-style-bande-dessinee-pop-art_175838-505.jpg?alt=media&token=5ccc9eb8-5e81-429f-9556-f78daefc04fc';
+				break;
+			case 'geography':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizGeo.png?alt=media&token=3c60e757-d230-46a2-b9a5-5cea5de71a8a';
+				break;
+			case 'history':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizHistory.png?alt=media&token=f497f9f4-b207-4cba-9a1d-189b73e296b6';
+				break;
+			case 'music':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizMusic.png?alt=media&token=316ecac1-1011-4c20-a3a6-c99fe2aa9c67';
+				break;
+			case 'science':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizScience.png?alt=media&token=db589949-98dc-488a-86fa-99dfdfff270c';
+				break;
+			case 'society_and_culture':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizSoc%26Cult.png?alt=media&token=24270bda-34a5-40c2-9e12-5fc3fb90434a';
+				break;
+			case 'society':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizSoc.png?alt=media&token=0e1df358-65c9-4e2b-9547-6f27a57531d1';
+				break;
+			case 'culture':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizCult.png?alt=media&token=b073d09f-6c22-45e2-8cd7-4d35be50d3b8';
+				break;
+			case 'sports':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizSport.png?alt=media&token=b46cd56e-8c63-4d1c-b667-312df3cc46b1';
+				break;
+			case 'sport':
+				img = 'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quizSport.png?alt=media&token=b46cd56e-8c63-4d1c-b667-312df3cc46b1';
+				break;
+
+			default:
+				img =
+					'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quiz-dans-style-bande-dessinee-pop-art_175838-505.jpg?alt=media&token=5ccc9eb8-5e81-429f-9556-f78daefc04fc';
+				break;
+		}
 
 		const data = {
-			name: dataRaw[0].category+' '+allQuiz.count++,
+			name: dataRaw[0].category + ' ' + allQuiz.count++,
+			img: img,
 			createdAt: new Date(),
 			updatedAt: new Date(),
 			question: questions,

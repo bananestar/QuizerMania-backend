@@ -21,6 +21,12 @@ module.exports = (sequelize) => {
 				type: DataTypes.STRING(100),
 				allowNull: false,
 			},
+			img: {
+				type: DataTypes.STRING(2000),
+				allowNull: false,
+				defaultValue:
+					'https://firebasestorage.googleapis.com/v0/b/quizermania-f7be1.appspot.com/o/quiz-dans-style-bande-dessinee-pop-art_175838-505.jpg?alt=media&token=5ccc9eb8-5e81-429f-9556-f78daefc04fc',
+			},
 		},
 		{
 			tableName: 'quiz',

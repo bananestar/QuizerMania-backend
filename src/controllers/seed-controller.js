@@ -110,7 +110,20 @@ const seedController = {
 			} else loop = true;
 		} while (loop);
 
-		const Score = Math.floor(Math.random() * 100) + 1;
+		const questionsAllByQuizz = await db.Quiz.findAll({
+			where: { quizID },
+			include: [
+				{
+					model: db.Question,
+					through: { attributes: [] },
+					include: {
+						model: db.Reponse,
+					},
+				},
+			],
+		});
+
+		const Score = Math.floor(Math.random() * questionsAllByQuizz[0].questions.length) + 1;
 
 		const data = {
 			score: Score,
@@ -118,7 +131,8 @@ const seedController = {
 			quizID: quizID,
 		};
 
-		return await db.Score.create(data);
+		await db.Score.create(data);
+		return data
 	},
 
 	//! recuperation de tout les quiz
